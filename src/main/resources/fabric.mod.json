@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "elytrahelper",
+  "version": "${version}",
+  "name": "Elytra Helper",
+  "description": "Помощник для управления элитрами",
+  "authors": [
+    "StarFoxBW"
+  ],
+  "contact": {
+    "repo": "https://github.com/user/ElytraHelper2"
+  },
+  "license": "MIT",
+  "icon": "assets/elytrahelper/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "im.cookie.elytrahelper2.ElytraHelper2"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "1.21",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
