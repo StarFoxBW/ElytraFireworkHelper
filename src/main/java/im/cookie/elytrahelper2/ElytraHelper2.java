@@ -18,7 +18,6 @@ public class ElytraHelper2 implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Регистрация кнопки в настройках управления
         fireworkKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.elytrahelper.firework",
                 InputUtil.Type.KEYSYM,
@@ -29,7 +28,6 @@ public class ElytraHelper2 implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null) return;
 
-            // Проверка нажатия кнопки фейерверка
             if (fireworkKey.wasPressed()) {
                 if (System.currentTimeMillis() - lastFireworkTime > 200) {
                     fireworkUsed = true;
@@ -37,7 +35,6 @@ public class ElytraHelper2 implements ClientModInitializer {
                 }
             }
 
-            // Обработка использования фейерверка
             if (fireworkUsed) {
                 handleFireworkUse(client);
                 fireworkUsed = false;
@@ -48,27 +45,23 @@ public class ElytraHelper2 implements ClientModInitializer {
     private void handleFireworkUse(net.minecraft.client.MinecraftClient client) {
         if (client.player == null) return;
 
-        // Проверяем, что надет элитры
         ItemStack chestSlot = client.player.getInventory().getArmorStack(2);
         if (!chestSlot.isOf(Items.ELYTRA)) {
             client.player.sendMessage(Text.literal("Элитры не надеты!"), true);
             return;
         }
 
-        // Проверяем, что игрок летит на элитрах
         if (!client.player.isFallFlying()) {
             client.player.sendMessage(Text.literal("Вы не летите на элитрах!"), true);
             return;
         }
 
-        // Ищем фейерверк в хотбаре
         int fireworkSlot = findFireworkInHotbar(client);
         if (fireworkSlot == -1) {
             client.player.sendMessage(Text.literal("Фейерверки не найдены в хотбаре!"), true);
             return;
         }
 
-        // Используем фейерверк
         useFirework(client, fireworkSlot);
     }
 
@@ -87,18 +80,14 @@ public class ElytraHelper2 implements ClientModInitializer {
     private void useFirework(net.minecraft.client.MinecraftClient client, int slot) {
         if (client.player == null || client.interactionManager == null) return;
 
-        // Сохраняем текущий слот
         int previousSlot = client.player.getInventory().selectedSlot;
 
         try {
-            // Переключаемся на слот с фейерверком
             client.player.getInventory().selectedSlot = slot;
 
-            // Используем фейерверк
             client.interactionManager.interactItem(client.player, net.minecraft.util.Hand.MAIN_HAND);
 
         } finally {
-            // Возвращаемся к предыдущему слоту
             client.player.getInventory().selectedSlot = previousSlot;
         }
     }
